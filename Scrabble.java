@@ -48,7 +48,12 @@ public class Scrabble {
 
 	// Checks if the given word is in the dictionary.
 	public static boolean isWordInDictionary(String word) {
-		//// Replace the following statement with your code
+		for(int i = 0; i < DICTIONARY.length; i++)
+		{
+			if(word.equals(DICTIONARY[i])) {
+				return true;
+			}
+		}
 		return false;
 	}
 	
@@ -56,16 +61,29 @@ public class Scrabble {
 	// If the length of the word equals the length of the hand, adds 50 points to the score.
 	// If the word includes the sequence "runi", adds 1000 points to the game.
 	public static int wordScore(String word) {
-		//// Replace the following statement with your code
-		return 0;
+		int sum = 0;
+		for(int i = 0; i < word.length(); i++) {
+			int index = word.charAt(i)- 'a';
+			sum += SCRABBLE_LETTER_VALUES[index];
+		}
+		sum *= word.length();
+		if(word.length() == 10) {
+			sum += 50;
+		}
+		if(MyString.subsetOf("runi", word)) {
+			sum += 1000;
+		}
+		return sum;
 	}
 
 	// Creates a random hand of length (HAND_SIZE - 2) and then inserts
 	// into it, at random indexes, the letters 'a' and 'e'
 	// (these two vowels make it easier for the user to construct words)
 	public static String createHand() {
-		//// Replace the following statement with your code
-		return null;
+		String hand = MyString.randomStringOfLetters(HAND_SIZE - 2);
+		hand += "a";
+		hand += "e";
+		return hand;
 	}
 	
     // Runs a single hand in a Scrabble game. Each time the user enters a valid word:
@@ -85,9 +103,23 @@ public class Scrabble {
 			// non-whitespace characters. Whitespace is either space characters, or  
 			// end-of-line characters.
 			String input = in.readString();
-			//// Replace the following break statement with code
-			//// that completes the hand playing loop
-			break;
+			if(input.equals(".")) {
+				System.out.println("End of hand. Total score: " + score + " points");
+				break;
+			}
+			if((isWordInDictionary(input)) && MyString.subsetOf(input, hand)) {
+				int thisWordScore = wordScore(input); 
+				score += thisWordScore;
+				System.out.println(input + " earned " + score + " points. Score: " + score + " points\n");
+				hand = MyString.remove(hand, input);	
+			}
+			else if(!isWordInDictionary(input)) {
+				System.out.println("Invalid word. Try again.");
+			}
+			else if(!MyString.subsetOf(hand, input)) {
+				System.out.println("No such word in the dictionary. Try again.");
+			}
+		
 		}
 		if (hand.length() == 0) {
 	        System.out.println("Ran out of letters. Total score: " + score + " points");
