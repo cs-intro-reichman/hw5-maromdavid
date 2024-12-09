@@ -67,8 +67,10 @@ public class MyString {
        }
        String result = "";
        for(int i = 0; i < str.length(); i++) {
+           result += str.charAt(i);
+           if (i < str.length() - 1) {
             result += " ";
-            result += str.charAt(i);
+        }
        }
         return result;
     }
@@ -104,12 +106,8 @@ public class MyString {
      */
     public static String remove(String str1, String str2) {
         String result = str1;
-
-    // Iterate over each character in str2
     for (int i = 0; i < str2.length(); i++) {
         char c = str2.charAt(i);
-
-        // Remove one occurrence of the character from str1
         int index = result.indexOf(c);
         if (index != -1) {
             result = result.substring(0, index) + result.substring(index + 1);
