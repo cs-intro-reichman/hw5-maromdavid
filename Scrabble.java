@@ -110,17 +110,18 @@ public class Scrabble {
 			} else if (!MyString.subsetOf(input, hand)) {
 				System.out.println("Invalid word. Try again.");
 			} else {
+				hand = MyString.remove(hand, input);
 				int thisWordScore = wordScore(input);
 				score += thisWordScore;
 				System.out.println(input + " earned " + thisWordScore + " points. Score: " + score + " points\n");
-				hand = MyString.remove(hand, input);
-				if (hand.length() == 0) {
-					System.out.println("Ran out of letters. Total score: " + score + " points");
-				} 
 			}
 		
 		}
-		System.out.println("End of hand. Total score: " + score + " points");
+		if (hand.length() == 0) {
+	        System.out.println("Ran out of letters. Total score: " + score + " points");
+		} else {
+			System.out.println("End of hand. Total score: " + score + " points");
+		}
 	}
 
 	// Plays a Scrabble game. Prompts the user to enter 'n' for playing a new hand, or 'e'
